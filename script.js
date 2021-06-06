@@ -13,14 +13,14 @@ async function getData(URL) {
   try {
     const fetchData = await fetch(URL)
     const data = await fetchData.json()
-    console.log(data)
+    return data
 
   } catch (err) {
     console.log(err)
   }
 }
 
-getData('http://api.openweathermap.org/data/2.5/weather?q=Zdunska Wola&lang=eng&units=metric&appid=5937e48258dc7856eaf3f4e49ed820a0') //aktualna
+getData('https://api.openweathermap.org/data/2.5/weather?q=Zdunska Wola&lang=eng&units=metric&appid=5937e48258dc7856eaf3f4e49ed820a0') //aktualna
 getData('https://api.openweathermap.org/data/2.5/onecall?lat=51.5992&lon=18.9397&exclude=current,minutely,alerts&units=metric&appid=5937e48258dc7856eaf3f4e49ed820a0') //daily i 48hr
 
 // async function displayForecast(data){
