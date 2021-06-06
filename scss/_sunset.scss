@@ -1,0 +1,22 @@
+.sunset{
+    height: 20vh;
+    &__container{
+        height: 100%;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    &__hour{
+        font-weight: normal;
+        font-size: var(--font-med);
+    }
+    &__moon-c, &__sun-c{
+        height: 100%;
+        padding: 2.8rem 1rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+    }
+}

@@ -1,0 +1,23 @@
+.slider {
+    height: 20vh;
+    display: flex;
+    padding: 0 1rem;
+    width: 100%;
+    overflow: hidden;
+}
+
+.slide {
+    display: flex;
+    margin: 0 .3rem;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    &__hour,
+    &__temperature {
+        font-size: var(--font-small);
+        font-weight: normal;
+    }
+    &__icon{
+        height: 40%;
+    }
+}

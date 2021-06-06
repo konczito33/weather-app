@@ -1,0 +1,54 @@
+.main{
+    display: flex;
+    justify-content: center;
+    height: 30vh;
+    margin-top: 5vh;
+    padding: 0 var(--main-pad);
+    
+    &__info{
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        padding: 2rem 0;
+        justify-content: space-between;
+        align-items: center;
+        // background-color: blue;
+    }
+    &__city-c{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    &__city{
+        font-weight: normal;
+        padding-right: .8rem;
+        font-size: var(--font-small);
+        white-space: nowrap;
+    }
+    &__city-icon{
+        transform: scale(1.3);
+    }
+    &__temperature{
+        font-weight: 300;
+        font-size: 6rem;
+    }
+    &__desc{
+        display: block;
+        background-color: #fdf7f7;
+        border-radius: 1rem;
+        padding: .2rem 2rem;
+        font-size: var(--font-med);
+        font-weight: 300;
+    }
+    &__image-c{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex: 1;
+        // background-color: red;
+    }
+    &__image{
+        transform: scale(1.5);
+    }
+}

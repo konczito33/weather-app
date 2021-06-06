@@ -1,0 +1,33 @@
+.forecast {
+    height: 20vh;
+    padding: 1rem 0;
+
+    &__container {
+        padding: 0 var(--main-pad);
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+    }
+
+    &__icon {
+        width: 20%;
+        margin: 0 1rem;
+    }
+
+    &__day {
+        font-weight: normal;
+        flex: 1;
+        font-size: var(--font-med);
+    }
+
+    &__temperature {
+        padding: 0 1rem;
+        font-weight: normal;
+    }
+    &__temperature--day{
+        color: var(--orange);
+    }
+    &__temperature--night{
+        color: rgb(26, 11, 160);
+    }
+}
