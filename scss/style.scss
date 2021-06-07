@@ -14,8 +14,14 @@
     --font-big: 1.2rem;
 }
 
+.container{
+    width: 100%;
+    overflow-x: hidden;
+}
+
 body{
     font-family: 'Poppins';
+    overflow-x: hidden;
 }
 
 svg{

@@ -5,18 +5,18 @@ const GOOGLE_KEY = `AIzaSyCHoPD7FvLTNK_nMNEyOMYIhsHpkSzYl7E`
 
 //HTML ELEMENTS
 const cityEl = document.querySelector('.main__city')
-tempEl = document.querySelector('.main__temperature')
-feelsLikeEl = document.querySelector('.main__feels-like')
-descEl = document.querySelector('.main__desc')
-mainPhotoEl = document.querySelector('.main__image')
-pressureEl = document.querySelector('.pressure-value')
-humidityEl = document.querySelector('.water-value')
-windSpeedEl = document.querySelector('.wind-value')
-sunriseEl = document.querySelector('.sun-hour')
-sunsetEl = document.querySelector('.moon-hour')
-slider = document.querySelector('.slider')
-dailyForecastContainer = document.querySelector('.forecast')
-inputSearch = document.querySelector('#search')
+const tempEl = document.querySelector('.main__temperature')
+const feelsLikeEl = document.querySelector('.main__feels-like')
+const descEl = document.querySelector('.main__desc')
+const mainPhotoEl = document.querySelector('.main__image')
+const pressureEl = document.querySelector('.pressure-value')
+const humidityEl = document.querySelector('.water-value')
+const windSpeedEl = document.querySelector('.wind-value')
+const sunriseEl = document.querySelector('.sun-hour')
+const sunsetEl = document.querySelector('.moon-hour')
+const slider = document.querySelector('.slider')
+const dailyForecastContainer = document.querySelector('.forecast')
+const inputSearch = document.querySelector('#search')
 
 async function getData(URL) {
   try {
@@ -67,38 +67,17 @@ async function updateData(data) {
   } = resData
 
 
-  hourly.forEach(hour => {
-    displayHourlyForecast(hour)
+  hourly.forEach((hour, index) => {
+    displayHourlyForecast(hour, index)
   })
 
   const {
     daily
   } = resData
-  const dailyShort = daily.slice(0, 3)
+  const dailyShort = daily.slice(1, 4)
 
   dailyShort.forEach(day => {
-    const {
-      dt,
-      temp
-    } = day
-
-    const {
-      icon
-    } = day.weather[0]
-    const {
-      day: dayTemp,
-      night: nightTemp
-    } = temp
-
-    const dayEl = document.createElement('div')
-    dayEl.classList.add('forecast__container')
-    dayEl.innerHTML = `  
-            <h3 class="forecast__day">${getDay(dt)}</h3>
-            <img class="forecast__icon" src="http://openweathermap.org/img/wn/${icon}@2x.png"></img>
-            <h3 class="forecast__temperature forecast__temperature--day">${dayTemp.toFixed()}°</h3>
-            <h3 class="forecast__temperature forecast__temperature--night">${nightTemp.toFixed()}°</h3>`
-
-    dailyForecastContainer.appendChild(dayEl)
+    displayDailyForecast(day)
   })
 
 }
@@ -107,7 +86,7 @@ updateData(getData('https://api.openweathermap.org/data/2.5/onecall?lat=51.5992&
 
 
 
-
+//TIME FUNCS
 function sToTime(s) {
   const date = new Date(s * 1000)
   const hours = date.getHours()
@@ -129,8 +108,10 @@ function timeFormat(time) {
     return `${time}`
   }
 }
+//
 
-function displayHourlyForecast(hour) {
+//MAIN DISPLAY FUNCS
+function displayHourlyForecast(hour, index) {
   const {
     dt,
     temp
@@ -139,6 +120,7 @@ function displayHourlyForecast(hour) {
     icon
   } = hour.weather[0]
 
+
   const slideEl = document.createElement('div')
   slideEl.classList.add('slide')
   slideEl.innerHTML = `
@@ -146,17 +128,96 @@ function displayHourlyForecast(hour) {
             <img src="http://openweathermap.org/img/wn/${icon}@2x.png" class="slide__icon"></img>
             <h4 class="slide__temperature">${temp.toFixed()}°</h4>`
   slider.appendChild(slideEl)
+  slideEl.addEventListener('touchstart', touchStart(index))
+  slideEl.addEventListener('touchend', touchEnd)
+  slideEl.addEventListener('touchmove', touchMove)
 }
 
 
 function displayDailyForecast(day) {
+  const {
+    dt,
+    temp
+  } = day
 
+  const {
+    icon
+  } = day.weather[0]
+  const {
+    day: dayTemp,
+    night: nightTemp
+  } = temp
+
+  const dayEl = document.createElement('div')
+  dayEl.classList.add('forecast__container')
+  dayEl.innerHTML = `  
+            <h3 class="forecast__day">${getDay(dt)}</h3>
+            <img class="forecast__icon" src="http://openweathermap.org/img/wn/${icon}@2x.png"></img>
+            <h3 class="forecast__temperature forecast__temperature--day">${dayTemp.toFixed()}°</h3>
+            <h3 class="forecast__temperature forecast__temperature--night">${nightTemp.toFixed()}°</h3>`
+
+  dailyForecastContainer.appendChild(dayEl)
 }
 
+//
+
+
+//TOUCH SLIDER
+let isDragging = false,
+  startPos = 0,
+  currentTranslate = 0,
+  prevTranslate = 0,
+  animationID = 0,
+  currentIndex = 0
 
 
 
+function touchStart(idx) {
+  return (e) => {
+    currentIndex = idx
+    startPos = getPostion(e)
+    isDragging = true
+    animationID = requestAnimationFrame(animation)
+    slider.classList.add('grabbing')
+  }
+}
 
+function touchMove(e) {
+  if (isDragging) {
+    const currentPostion = getPostion(e)
+    currentTranslate = prevTranslate + currentPostion - startPos
+  }
+}
+
+function touchEnd() {
+  isDragging = false
+  cancelAnimationFrame(animationID)
+  slider.classList.remove('grabbing')
+  setPosByIndex()
+}
+
+function setPosByIndex() {
+  prevTranslate = currentTranslate
+  setSliderPostion()
+}
+
+function getPostion(e) {
+  return e.type.includes('mouse') ? e.pageX : e.touches[0].clientX
+}
+
+function setSliderPostion() {
+  if(currentTranslate < 0){
+    console.log(currentTranslate)
+    slider.style.transform = `translateX(${currentTranslate}px)`
+  }
+}
+
+function animation() {
+  setSliderPostion()
+  if (isDragging) {
+    requestAnimationFrame(animation)
+  }
+}
 
 //GOOGLE
 
