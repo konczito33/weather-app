@@ -67,7 +67,7 @@ async function updateData(data) {
   } = resData
 
 
-  hourly.forEach((hour, index) => {
+  hourly.slice(0,24).forEach((hour, index) => {
     displayHourlyForecast(hour, index)
   })
 
@@ -206,7 +206,7 @@ function getPostion(e) {
 }
 
 function setSliderPostion() {
-  if(currentTranslate < 0){
+  if(currentTranslate < 0 && currentTranslate > -slider.children[0].offsetWidth * slider.children.length + window.innerWidth - 100){
     console.log(currentTranslate)
     slider.style.transform = `translateX(${currentTranslate}px)`
   }
