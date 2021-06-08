@@ -1,7 +1,3 @@
-const WEATHER_KEY = `5937e48258dc7856eaf3f4e49ed820a0`
-const WEATHER_LINK = `api.openweathermap.org/data/2.5/weather?q={city name}&appid={API key}`
-const IP_LINK = `https://geo.ipify.org/api/v1?apiKey=at_VpzZNnIRzyipiqrtXhduYR25T6LQL`
-const GOOGLE_KEY = `AIzaSyCHoPD7FvLTNK_nMNEyOMYIhsHpkSzYl7E`
 
 //HTML ELEMENTS
 const cityEl = document.querySelector('.main__city')
@@ -29,8 +25,80 @@ async function getData(URL) {
   }
 }
 
-getData('https://api.openweathermap.org/data/2.5/weather?q=Zdunska Wola&lang=eng&units=metric&appid=5937e48258dc7856eaf3f4e49ed820a0') //aktualna
-getData('https://api.openweathermap.org/data/2.5/onecall?lat=51.5992&lon=18.9397&exclude=minutely,alerts&units=metric&appid=5937e48258dc7856eaf3f4e49ed820a0') //daily i 48hr
+window.addEventListener('load',  () => {
+  let long
+  let lat
+
+  if(navigator.geolocation){
+    navigator.geolocation.getCurrentPosition(position => {
+      long = position.coords.longitude
+      lat = position.coords.latitude
+      updateData(getData(`https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${long}&exclude=minutely,alerts&units=metric&appid=5937e48258dc7856eaf3f4e49ed820a0`))
+      displayCityName(getData('http://ip-api.com/json/'))
+    }, () => {
+      document.querySelector('body').innerHTML = 'Enable localisation'
+    })
+  }
+})
+
+
+
+
+//TIME FUNCS
+function sToTime(s) {
+  const date = new Date(s * 1000)
+  const hours = date.getHours()
+  const minutes = date.getMinutes()
+  return `${timeFormat(hours)}:${timeFormat(minutes)}`
+}
+
+function getDay(s) {
+  const dayArr = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+  const date = new Date(s * 1000)
+  const day = date.getDay()
+  return dayArr[day]
+}
+
+function timeFormat(time) {
+  if (time < 10) {
+    return time = `0${time}`
+  } else {
+    return `${time}`
+  }
+}
+//
+
+//MAIN DISPLAY FUNCS
+async function displayCityName(data){
+  const resData = await data
+  const city = resData.city
+  cityEl.textContent = city
+}
+
+
+
+function displayHourlyForecast(hour, index) {
+  const {
+    dt,
+    temp
+  } = hour
+  const {
+    icon
+  } = hour.weather[0]
+
+
+  const slideEl = document.createElement('div')
+  slideEl.classList.add('slide')
+  slideEl.innerHTML = `
+            <h4 class="slide__hour">${sToTime(dt)}</h4>
+            <img src="http://openweathermap.org/img/wn/${icon}@2x.png" class="slide__icon"></img>
+            <h4 class="slide__temperature">${temp.toFixed()}°</h4>`
+  slider.appendChild(slideEl)
+  slideEl.addEventListener('touchstart', touchStart(index))
+  slideEl.addEventListener('touchend', touchEnd)
+  slideEl.addEventListener('touchmove', touchMove)
+}
+
 
 async function updateData(data) {
   const resData = await data
@@ -82,56 +150,6 @@ async function updateData(data) {
 
 }
 
-updateData(getData('https://api.openweathermap.org/data/2.5/onecall?lat=51.5992&lon=18.9397&exclude=minutely,alerts&units=metric&appid=5937e48258dc7856eaf3f4e49ed820a0'))
-
-
-
-//TIME FUNCS
-function sToTime(s) {
-  const date = new Date(s * 1000)
-  const hours = date.getHours()
-  const minutes = date.getMinutes()
-  return `${timeFormat(hours)}:${timeFormat(minutes)}`
-}
-
-function getDay(s) {
-  const dayArr = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
-  const date = new Date(s * 1000)
-  const day = date.getDay()
-  return dayArr[day]
-}
-
-function timeFormat(time) {
-  if (time < 10) {
-    return time = `0${time}`
-  } else {
-    return `${time}`
-  }
-}
-//
-
-//MAIN DISPLAY FUNCS
-function displayHourlyForecast(hour, index) {
-  const {
-    dt,
-    temp
-  } = hour
-  const {
-    icon
-  } = hour.weather[0]
-
-
-  const slideEl = document.createElement('div')
-  slideEl.classList.add('slide')
-  slideEl.innerHTML = `
-            <h4 class="slide__hour">${sToTime(dt)}</h4>
-            <img src="http://openweathermap.org/img/wn/${icon}@2x.png" class="slide__icon"></img>
-            <h4 class="slide__temperature">${temp.toFixed()}°</h4>`
-  slider.appendChild(slideEl)
-  slideEl.addEventListener('touchstart', touchStart(index))
-  slideEl.addEventListener('touchend', touchEnd)
-  slideEl.addEventListener('touchmove', touchMove)
-}
 
 
 function displayDailyForecast(day) {
