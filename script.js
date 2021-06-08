@@ -34,7 +34,7 @@ window.addEventListener('load',  () => {
       long = position.coords.longitude
       lat = position.coords.latitude
       updateData(getData(`https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${long}&exclude=minutely,alerts&units=metric&appid=5937e48258dc7856eaf3f4e49ed820a0`))
-      displayCityName(getData('http://ip-api.com/json/'))
+      displayCityName(getData(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${long}&key=AIzaSyCUjKqI_6yohkGHjURltQi4OrXz3mRhoDc`))
     }, () => {
       document.querySelector('body').innerHTML = 'Enable localisation'
     })
@@ -66,12 +66,12 @@ function timeFormat(time) {
     return `${time}`
   }
 }
-//
+
 
 //MAIN DISPLAY FUNCS
 async function displayCityName(data){
   const resData = await data
-  const city = resData.city
+  const city = resData.results[1].address_components[2].long_name
   cityEl.textContent = city
 }
 
