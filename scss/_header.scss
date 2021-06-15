@@ -35,6 +35,11 @@
         height: 100%;
         border: 1px solid #333;
         border-radius: .5rem;
+        transition: border-color .2s;
+    }
+    &__input:focus{
+        border-color: rgb(204, 135, 7);
+        outline: none;
     }
 
     &__icon {

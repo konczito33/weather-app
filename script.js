@@ -19,6 +19,7 @@ const sunsetSectionEl = document.querySelector('.sunset')
 const separators = document.querySelectorAll('.separator')
 const errorEl = document.querySelector('.error')
 
+
 async function getData(URL) {
   try {
     const fetchData = await fetch(URL)
@@ -234,14 +235,6 @@ async function displayActualData(data) {
     icon: photoId,
     main
   } = resData.weather[0]
-  cityEl.textContent = resData.name
-
-
-
-  sunriseEl.textContent = `${sToTime(sunrise)}`
-  sunsetEl.textContent = `${sToTime(sunset)}`
-
-
 
   mainEl.innerHTML = `
    <div class="main__info">
@@ -427,7 +420,21 @@ function addToLibraryAnim() {
 }
 
 
+//NAVIGATION
+const hamburgerButton = document.querySelector('.nav__button')
+const closeNavBtn = document.querySelector('.side-nav__close')
+const sideNav = document.querySelector('.side-nav')
 
+function openNav() {
+  sideNav.classList.add('active')
+}
+
+function closeNav() {
+  sideNav.classList.remove('active')
+}
+
+hamburgerButton.addEventListener('click', openNav)
+closeNavBtn.addEventListener('click', closeNav)
 
 
 //GOOGLE
