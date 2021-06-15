@@ -28,8 +28,8 @@
                         stroke-linecap="round" stroke-linejoin="round" />
                 </svg>
             </button>
-            <div class="nav__search search">
-                <input placeholder="Search..." type="search" class="search__input" id="search">
+            <form class="nav__search search">
+                <input required autocomplete="off" placeholder="Search..." type="search" class="search__input" id="search">
                 <svg class="search__icon" width="16" height="16" viewBox="0 0 16 16" fill="none"
                     xmlns="http://www.w3.org/2000/svg">
                     <path
@@ -38,7 +38,7 @@
                     <path d="M10.4582 10.0054L13.3318 12.879L12.8794 13.3315L10.0058 10.4579L10.4582 10.0054Z"
                         fill="black" />
                 </svg>
-            </div>
+            </form>
             <button class="nav__add">
                 <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <line x1="7.67392" y1="2.18557e-08" x2="7.67392" y2="15" stroke="black" />
@@ -162,7 +162,7 @@
     <div class="forecast">
     </div>
     </div>
-
+    <div class="error">We can't find any city, please try again</div>
 
 
 
