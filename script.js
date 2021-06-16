@@ -59,7 +59,8 @@ window.addEventListener('load', () => {
       createMap(long, lat)
 
     }, () => {
-      document.querySelector('body').innerHTML = 'Enable localization'
+     displayError()
+     errorEl.innerText = 'Enable localization'
     })
   }
 })
