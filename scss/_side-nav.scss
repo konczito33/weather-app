@@ -13,9 +13,10 @@
     transition: transform .3s;
 
     &__close {
-        padding: 1.4rem;
+        margin: 1.4rem;
         background-color: transparent;
         border: none;
+        cursor: pointer;
     }
 
     &__links {
@@ -35,7 +36,7 @@
 
     &__hour {
         font-weight: lighter;
-        font-size: 3rem;
+        font-size: 4rem;
     }
 
     &__date {

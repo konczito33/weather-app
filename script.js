@@ -1,5 +1,5 @@
 //HTML ELEMENTS
-const cityEl = document.querySelector('.main__city')
+
 const tempEl = document.querySelector('.main__temperature')
 const feelsLikeEl = document.querySelector('.main__feels-like')
 const descEl = document.querySelector('.main__desc')
@@ -18,6 +18,7 @@ const detailsEl = document.querySelector('.section-details')
 const sunsetSectionEl = document.querySelector('.sunset')
 const separators = document.querySelectorAll('.separator')
 const errorEl = document.querySelector('.error')
+const mapEl = document.querySelector('.map')
 
 
 async function getData(URL) {
@@ -55,6 +56,7 @@ window.addEventListener('load', () => {
       lat = position.coords.latitude
       updateForecastData(getData(`https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${long}&units=metric&exclude=current,minutely,alerts&appid=5937e48258dc7856eaf3f4e49ed820a0`))
       displayActualData(getData(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${long}&units=metric&appid=5937e48258dc7856eaf3f4e49ed820a0`))
+      createMap(long, lat)
 
     }, () => {
       document.querySelector('body').innerHTML = 'Enable localization'
@@ -341,6 +343,19 @@ async function displayActualData(data) {
 
             </div>
         </div>`
+  const cityEl = document.querySelector('.main__city')
+  
+
+  cityEl.addEventListener('click', async () => {
+    const location = await updateCoords(getCoordsData(`https://maps.googleapis.com/maps/api/geocode/json?address=${cityEl.innerText}&key=AIzaSyCUjKqI_6yohkGHjURltQi4OrXz3mRhoDc`))
+    const {
+      lat,
+      lng
+    } = location
+    map.setView(new L.LatLng(lat, lng), 8);
+    showMap()
+
+  })
 }
 
 //TOUCH SLIDER
@@ -437,6 +452,32 @@ hamburgerButton.addEventListener('click', openNav)
 closeNavBtn.addEventListener('click', closeNav)
 
 
+//clock
+
+function updateClock() {
+  const hourEl = document.querySelector('.side-nav__hour')
+  const dateEl = document.querySelector('.side-nav__date')
+  const date = new Date
+  const hour = date.getHours()
+  const minutes = date.getMinutes()
+  const year = date.getFullYear()
+  const day = date.getDate()
+  const month = date.getMonth()
+  dateEl.innerText = `${day}.${fixMonth(month)}.${year}`
+  hourEl.innerText = `${hour}:${minutes}`
+  window.setTimeout(updateClock, 1000)
+}
+
+function fixMonth(month) {
+  if (month < 9) {
+    return `0${month}`
+  } else {
+    return month
+  }
+}
+
+window.setTimeout(updateClock, 1000)
+
 //GOOGLE
 
 // function activateGoogleApi() {
@@ -459,25 +500,32 @@ closeNavBtn.addEventListener('click', closeNav)
 
 //MAP 
 
-// async function createMap(URL) {
-//   const data = await getData(URL)
-//   const {
-//     location
-//   } = data
-//   const {
-//     lat,
-//     lng
-//   } = location
-//   map = L.map('map').setView([lat, lng], 1);
-//   L.tileLayer('https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=5YGqAQzCA1gKabtUXy20', {
-//     tileSize: 512,
-//     zoomOffset: -1,
-//     minZoom: 10,
-//     attribution: "\u003ca href=\"https://www.maptiler.com/copyright/\" target=\"_blank\"\u003e\u0026copy; MapTiler\u003c/a\u003e \u003ca href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\"\u003e\u0026copy; OpenStreetMap contributors\u003c/a\u003e",
-//     crossOrigin: true
-//   }).addTo(map);
 
-//   const marker = L.marker([lat, lng]).addTo(map)
-// }
 
-// createMap('https://geo.ipify.org/api/v1?apiKey=at_VpzZNnIRzyipiqrtXhduYR25T6LQL')
+async function createMap(long, lat) {
+  // const location = await updateCoords(getCoordsData(`https://maps.googleapis.com/maps/api/geocode/json?address=${city}&key=AIzaSyCUjKqI_6yohkGHjURltQi4OrXz3mRhoDc`))
+  // const {
+  //   lat,
+  //   lng
+  // } = location
+  map = L.map('map').setView([lat, long], 1);
+  L.tileLayer('https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=5YGqAQzCA1gKabtUXy20', {
+    tileSize: 512,
+    zoomOffset: -1,
+    minZoom: 10,
+    attribution: "\u003ca href=\"https://www.maptiler.com/copyright/\" target=\"_blank\"\u003e\u0026copy; MapTiler\u003c/a\u003e \u003ca href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\"\u003e\u0026copy; OpenStreetMap contributors\u003c/a\u003e",
+    crossOrigin: true
+  }).addTo(map);
+
+  const marker = L.marker([lat, long]).addTo(map)
+}
+
+function showMap(){
+  mapEl.classList.add('active')
+}
+
+function hideMap(){
+  mapEl.classList.remove('active')
+}
+
+window.addEventListener('click', hideMap)

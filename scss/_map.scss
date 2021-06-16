@@ -1,0 +1,41 @@
+.map-c {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80%;
+    height: 100vh;
+    pointer-events: none;
+}
+
+.map {
+    position: fixed;
+    top: 50%;
+    width: 300px;
+    max-width: 80%;
+    height: 70vh;
+    background-color: red;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-50%);
+    transition: opacity .5s;
+    z-index: 0;
+}
+
+.map.active {
+    opacity: 1;
+    pointer-events: all;
+}
+
+
+
+.map a {
+    pointer-events: none;
+}
+
+.map.active a{
+    pointer-events: all;
+}
+
