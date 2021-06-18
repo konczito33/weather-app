@@ -20,6 +20,7 @@ const separators = document.querySelectorAll('.separator')
 const errorEl = document.querySelector('.error')
 const mapEl = document.querySelector('.map')
 
+let actualCity
 
 async function getData(URL) {
   try {
@@ -59,8 +60,8 @@ window.addEventListener('load', () => {
       createMap(long, lat)
 
     }, () => {
-     displayError()
-     errorEl.innerText = 'Enable localization'
+      displayError()
+      errorEl.innerText = 'Enable localization'
     })
   }
 })
@@ -70,6 +71,8 @@ const inputSearch = document.querySelector('#search')
 let city
 form.addEventListener('submit', async function (e) {
   e.preventDefault()
+  slider.style.transform = `translate(0)`
+  inputSearch.value = ''
   hideError()
   slider.innerHTML = ``
   dailyForecastContainer.innerHTML = ``
@@ -82,6 +85,7 @@ form.addEventListener('submit', async function (e) {
   updateForecastData(getData(`https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${long}&units=metric&exclude=current,minutely,alerts&appid=5937e48258dc7856eaf3f4e49ed820a0`))
   displayActualData(getData(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${long}&units=metric&appid=5937e48258dc7856eaf3f4e49ed820a0`))
   separators.forEach(separator => separator.style.display = 'block')
+
 
 })
 
@@ -239,6 +243,8 @@ async function displayActualData(data) {
     main
   } = resData.weather[0]
 
+  actualCity = resData.name
+
   mainEl.innerHTML = `
    <div class="main__info">
             <div class="main__city-c">
@@ -345,7 +351,7 @@ async function displayActualData(data) {
             </div>
         </div>`
   const cityEl = document.querySelector('.main__city')
-  
+
 
   cityEl.addEventListener('click', async () => {
     const location = await updateCoords(getCoordsData(`https://maps.googleapis.com/maps/api/geocode/json?address=${cityEl.innerText}&key=AIzaSyCUjKqI_6yohkGHjURltQi4OrXz3mRhoDc`))
@@ -357,6 +363,8 @@ async function displayActualData(data) {
     showMap()
 
   })
+
+
 }
 
 //TOUCH SLIDER
@@ -418,14 +426,26 @@ function animation() {
 
 //ADDING TO LIBRARY
 
-addToLibraryButton.addEventListener('click', () => {
-  addToLibraryAnim()
-})
+let addedCities = []
 
-function addToLibraryAnim() {
+addToLibraryButton.addEventListener('click', libraryButtonFuncionality)
+
+function libraryButtonFuncionality() {
+  if (!addedCities.includes(actualCity)) {
+    addToLibraryAnim(`Added to library &#128077;`)
+  } else {
+    addToLibraryAnim(`City already added`)
+  }
+
+  addToLibrary()
+  addToLibraryButton.removeEventListener('click', libraryButtonFuncionality)
+  window.setTimeout(() => addToLibraryButton.addEventListener('click', libraryButtonFuncionality), 1000)
+}
+
+function addToLibraryAnim(text) {
   const modal = document.createElement('div')
   modal.classList.add('add-info')
-  modal.innerHTML = `Added to library &#128077;`
+  modal.innerHTML = `${text}`
   document.body.appendChild(modal)
   window.setTimeout(() => {
     modal.style.animation = `modalAnim 1s both`
@@ -433,6 +453,13 @@ function addToLibraryAnim() {
   window.setTimeout(() => {
     modal.remove()
   }, 1000)
+}
+
+function addToLibrary() {
+  if (!addedCities.includes(actualCity)) {
+    addedCities.push(actualCity)
+  }
+  console.log(addedCities)
 }
 
 
@@ -464,16 +491,16 @@ function updateClock() {
   const year = date.getFullYear()
   const day = date.getDate()
   const month = date.getMonth()
-  dateEl.innerText = `${day}.${fixMonth(month)}.${year}`
-  hourEl.innerText = `${hour}:${minutes}`
+  dateEl.innerText = `${day}.${fixDate(month)}.${year}`
+  hourEl.innerText = `${hour}:${fixDate(minutes)}`
   window.setTimeout(updateClock, 1000)
 }
 
-function fixMonth(month) {
-  if (month < 9) {
-    return `0${month}`
+function fixDate(date) {
+  if (date <= 9) {
+    return `0${date}`
   } else {
-    return month
+    return date
   }
 }
 
@@ -521,11 +548,11 @@ async function createMap(long, lat) {
   const marker = L.marker([lat, long]).addTo(map)
 }
 
-function showMap(){
+function showMap() {
   mapEl.classList.add('active')
 }
 
-function hideMap(){
+function hideMap() {
   mapEl.classList.remove('active')
 }
 
