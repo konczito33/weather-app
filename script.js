@@ -431,12 +431,15 @@ let addedCities = []
 addToLibraryButton.addEventListener('click', libraryButtonFuncionality)
 
 function libraryButtonFuncionality() {
+  if(sideNavIsOpen === true){
+    disableLibraryButton()
+    return
+  } 
   if (!addedCities.includes(actualCity)) {
     addToLibraryAnim(`Added to library &#128077;`)
   } else {
     addToLibraryAnim(`City already added`)
   }
-
   addToLibrary()
   addToLibraryButton.removeEventListener('click', libraryButtonFuncionality)
   window.setTimeout(() => addToLibraryButton.addEventListener('click', libraryButtonFuncionality), 1000)
@@ -462,18 +465,29 @@ function addToLibrary() {
   console.log(addedCities)
 }
 
+function disableLibraryButton(){
+  addToLibraryButton.disabled = true
+}
+
+function enableLibraryButton(){
+  addToLibraryButton.disabled = false
+}
 
 //NAVIGATION
 const hamburgerButton = document.querySelector('.nav__button')
 const closeNavBtn = document.querySelector('.side-nav__close')
 const sideNav = document.querySelector('.side-nav')
+let sideNavIsOpen = false
 
 function openNav() {
   sideNav.classList.add('active')
+  sideNavIsOpen = true
 }
 
 function closeNav() {
   sideNav.classList.remove('active')
+  sideNavIsOpen = false
+  enableLibraryButton()
 }
 
 hamburgerButton.addEventListener('click', openNav)
