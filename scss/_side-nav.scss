@@ -13,7 +13,7 @@
     transition: transform .3s;
 
     &__close {
-        margin: 1.4rem;
+        margin: 1.6rem 2.4rem;
         background-color: transparent;
         border: none;
         cursor: pointer;
@@ -21,7 +21,7 @@
 
     &__links {
         list-style-type: none;
-        padding: 1.4rem;
+        padding:2.4rem;
     }
 
     &__date-c {
@@ -31,7 +31,7 @@
         flex-direction: column;
         justify-content: flex-end;
         align-items: center;
-        padding: 1.4rem;
+        padding:2.4rem;
         margin-bottom: 2rem;
     }
 
@@ -43,13 +43,15 @@
     &__date {
         font-weight: lighter;
     }
-    &__item{
+
+    &__item {
         width: 100%;
         display: flex;
         align-items: center;
         justify-content: space-between;
     }
-    &__link{
+
+    &__link {
         text-decoration: none;
         color: #000;
         margin: .2rem 0;
