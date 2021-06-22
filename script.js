@@ -186,7 +186,7 @@ async function updateForecastData(data) {
   const {
     daily
   } = resData
-  const dailyShort = daily.slice(1, 4)
+  const dailyShort = daily.slice(1, 7)
 
   dailyShort.forEach(day => {
     displayDailyForecast(day)
@@ -437,6 +437,40 @@ function animation() {
 }
 //
 
+
+//LOCAL STORAGE FUNCS
+
+let citiesStorage = []
+
+function checkStorage() {
+  if (localStorage.getItem('cities') === null) {
+    citiesStorage = [];
+  } else {
+    citiesStorage = JSON.parse(localStorage.getItem('cities'));
+  }
+}
+
+function saveToStorage(city) {
+  checkStorage()
+  if (!citiesStorage.includes(city)) {
+    citiesStorage.push(city)
+  } else{
+    return
+  }
+
+  localStorage.setItem('cities', JSON.stringify(citiesStorage));
+}
+
+function displayCitiesFromStorage() {
+  checkStorage()
+  citiesStorage = JSON.parse(localStorage.getItem('cities'));
+  citiesStorage.forEach(city => {
+    displayLibraryCities(city)
+  })
+}
+
+window.addEventListener('DOMContentLoaded', displayCitiesFromStorage)
+
 //ADDING TO LIBRARY
 
 let addedCities = []
@@ -448,7 +482,7 @@ function libraryButtonFuncionality() {
     disableLibraryButton()
     return
   }
-  if (!addedCities.includes(actualCity)) {
+  if (!addedCities.includes(actualCity) && !citiesStorage.includes(actualCity)) {
     addToLibraryAnim(`Added to library &#128077;`)
   } else {
     addToLibraryAnim(`City already added`)
@@ -456,17 +490,15 @@ function libraryButtonFuncionality() {
   addToLibrary()
   addToLibraryButton.removeEventListener('click', libraryButtonFuncionality)
   window.setTimeout(() => addToLibraryButton.addEventListener('click', libraryButtonFuncionality), 1000)
-
+  saveToStorage(actualCity)
 }
 
 libraryButton.addEventListener('click', () => {
-  libraryContainer.innerHTML = `<button class="library__button">Back</button>`
   const libraryBackButton = document.querySelector('.library__button')
   document.querySelector('body').style.height = '100vh'
   libraryBackButton.addEventListener('click', () => {
     removeLibrary()
     enableLibraryButton()
-    
   })
   addedCities.forEach(city => displayLibraryCities(city))
   activeLibrary()
@@ -481,7 +513,6 @@ function activeLibrary() {
 
 function removeLibrary() {
   libraryContainer.classList.remove('active')
-  libraryContainer.innerHTML = ''
 }
 
 async function returnLibraryCitiesData(city) {
@@ -556,8 +587,9 @@ function addToLibraryAnim(text) {
   }, 1000)
 }
 
+
 function addToLibrary() {
-  if (!addedCities.includes(actualCity)) {
+  if (!addedCities.includes(actualCity) && !citiesStorage.includes(actualCity)) {
     addedCities.push(actualCity)
   }
 }
