@@ -33,7 +33,6 @@ async function getData(URL) {
   try {
     const fetchData = await fetch(URL)
     const data = await fetchData.json()
-    console.log(data)
     return data
 
   } catch (err) {
@@ -529,7 +528,6 @@ async function returnLibraryCitiesData(city) {
 async function displayLibraryCities(city) {
 
   const resData = await returnLibraryCitiesData(city)
-  console.log(resData)
   const {
     humidity,
     temp
