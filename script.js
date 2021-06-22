@@ -439,7 +439,7 @@ function animation() {
 
 //LOCAL STORAGE FUNCS
 
-let citiesStorage = []
+let citiesStorage
 
 function checkStorage() {
   if (localStorage.getItem('cities') === null) {
