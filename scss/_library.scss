@@ -9,6 +9,65 @@
     opacity: 0;
 }
 
+.library{
+    position: fixed;
+    height: 100vh;
+    width: 100%;
+    top: 10vh;
+    display: none;
+    background-color: #fff;
+    display: none;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    z-index: 0;
+    padding: 1rem;
+    padding-top: 5rem;
+    overflow-y: scroll;
+
+    &__item{
+        margin: 10px;
+        width: 160px;
+        height: 200px;
+        padding: .5rem;
+        box-shadow: 0 0 10px 0px rgba(0,0,0,.2);
+    }
+    &__temp-c{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    &__list{
+        list-style: none;
+    }
+    &__detail{
+        display: flex;
+        align-items: center;
+    }
+    &__icon{
+        margin-right: 15px;
+    }
+    &__city{
+        font-weight: normal;
+        word-wrap: nowrap;
+    }
+    &__temp{
+        font-weight: lighter;
+        font-size: 2.5rem;
+    }
+    &__button{
+        position: absolute;
+        top: 2vh;
+        right: var(--main-pad);
+        padding: .2rem .5rem;
+        background-color: transparent;
+        border: 1px solid rgb(0,0,0);
+    }
+}
+
+.library.active{
+    display: flex;
+}
+
 @keyframes modalAnim{
     0%{
         opacity: 0;
