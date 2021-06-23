@@ -439,7 +439,7 @@ function animation() {
 
 //LOCAL STORAGE FUNCS
 
-let citiesStorage
+let citiesStorage 
 
 function checkStorage() {
   if (localStorage.getItem('cities') === null) {
@@ -463,12 +463,13 @@ function saveToStorage(city) {
 function displayCitiesFromStorage() {
   checkStorage()
   citiesStorage = JSON.parse(localStorage.getItem('cities'));
-  citiesStorage.forEach(city => {
-    displayLibraryCities(city)
-  })
+  if(!citiesStorage.length == 0){
+    citiesStorage.forEach(city => {
+      displayLibraryCities(city)
+    })
+  } else return
 }
 
-window.addEventListener('DOMContentLoaded', displayCitiesFromStorage)
 
 //ADDING TO LIBRARY
 
@@ -493,6 +494,7 @@ function libraryButtonFuncionality() {
 }
 
 libraryButton.addEventListener('click', () => {
+  displayCitiesFromStorage()
   const libraryBackButton = document.querySelector('.library__button')
   document.querySelector('body').style.height = '100vh'
   libraryBackButton.addEventListener('click', () => {
@@ -503,8 +505,8 @@ libraryButton.addEventListener('click', () => {
   activeLibrary()
   closeNav()
   disableLibraryButton()
-
 })
+
 
 function activeLibrary() {
   libraryContainer.classList.add('active')
