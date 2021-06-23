@@ -439,19 +439,19 @@ function animation() {
 
 //LOCAL STORAGE FUNCS
 
-
+window.addEventListener('DOMContentLoaded', displayCitiesFromStorage)
 
 function checkStorage() {
-
-}
-
-function saveToStorage(city) {
   let citiesStorage
   if (localStorage.getItem('cities') === null) {
     citiesStorage = [];
   } else {
     citiesStorage = JSON.parse(localStorage.getItem('cities'));
   }
+}
+
+function saveToStorage(city) {
+checkStorage()
   if (!citiesStorage.includes(city)) {
     citiesStorage.push(city)
   } else {
@@ -462,12 +462,7 @@ function saveToStorage(city) {
 }
 
 function displayCitiesFromStorage() {
-  let citiesStorage
-  if (localStorage.getItem('cities') === null) {
-    citiesStorage = [];
-  } else {
-    citiesStorage = JSON.parse(localStorage.getItem('cities'));
-  }
+checkStorage()
   citiesStorage = JSON.parse(localStorage.getItem('cities'));
   if (!citiesStorage.length == 0) {
     citiesStorage.forEach(city => {
@@ -484,12 +479,7 @@ let addedCities = []
 addToLibraryButton.addEventListener('click', libraryButtonFuncionality)
 
 function libraryButtonFuncionality() {
-  let citiesStorage
-  if (localStorage.getItem('cities') === null) {
-    citiesStorage = [];
-  } else {
-    citiesStorage = JSON.parse(localStorage.getItem('cities'));
-  }
+checkStorage()
   if (sideNavIsOpen === true) {
     disableLibraryButton()
     return
@@ -506,7 +496,6 @@ function libraryButtonFuncionality() {
 }
 
 libraryButton.addEventListener('click', () => {
-  displayCitiesFromStorage()
   const libraryBackButton = document.querySelector('.library__button')
   document.querySelector('body').style.height = '100vh'
   libraryBackButton.addEventListener('click', () => {
@@ -601,12 +590,7 @@ function addToLibraryAnim(text) {
 
 
 function addToLibrary() {
-  let citiesStorage
-  if (localStorage.getItem('cities') === null) {
-    citiesStorage = [];
-  } else {
-    citiesStorage = JSON.parse(localStorage.getItem('cities'));
-  }
+checkStorage()
   if (!addedCities.includes(actualCity) && !citiesStorage.includes(actualCity)) {
     addedCities.push(actualCity)
   }
