@@ -439,21 +439,22 @@ function animation() {
 
 //LOCAL STORAGE FUNCS
 
-let citiesStorage 
+
 
 function checkStorage() {
+
+}
+
+function saveToStorage(city) {
+  let citiesStorage
   if (localStorage.getItem('cities') === null) {
     citiesStorage = [];
   } else {
     citiesStorage = JSON.parse(localStorage.getItem('cities'));
   }
-}
-
-function saveToStorage(city) {
-  checkStorage()
   if (!citiesStorage.includes(city)) {
     citiesStorage.push(city)
-  } else{
+  } else {
     return
   }
 
@@ -461,9 +462,14 @@ function saveToStorage(city) {
 }
 
 function displayCitiesFromStorage() {
-  checkStorage()
+  let citiesStorage
+  if (localStorage.getItem('cities') === null) {
+    citiesStorage = [];
+  } else {
+    citiesStorage = JSON.parse(localStorage.getItem('cities'));
+  }
   citiesStorage = JSON.parse(localStorage.getItem('cities'));
-  if(!citiesStorage.length == 0){
+  if (!citiesStorage.length == 0) {
     citiesStorage.forEach(city => {
       displayLibraryCities(city)
     })
@@ -478,6 +484,12 @@ let addedCities = []
 addToLibraryButton.addEventListener('click', libraryButtonFuncionality)
 
 function libraryButtonFuncionality() {
+  let citiesStorage
+  if (localStorage.getItem('cities') === null) {
+    citiesStorage = [];
+  } else {
+    citiesStorage = JSON.parse(localStorage.getItem('cities'));
+  }
   if (sideNavIsOpen === true) {
     disableLibraryButton()
     return
@@ -589,6 +601,12 @@ function addToLibraryAnim(text) {
 
 
 function addToLibrary() {
+  let citiesStorage
+  if (localStorage.getItem('cities') === null) {
+    citiesStorage = [];
+  } else {
+    citiesStorage = JSON.parse(localStorage.getItem('cities'));
+  }
   if (!addedCities.includes(actualCity) && !citiesStorage.includes(actualCity)) {
     addedCities.push(actualCity)
   }
