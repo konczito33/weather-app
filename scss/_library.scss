@@ -11,7 +11,7 @@
 
 .library{
     position: fixed;
-    height: 100vh;
+    height: 90vh;
     width: 100%;
     top: 10vh;
     display: none;
@@ -25,6 +25,7 @@
     overflow-y: scroll;
 
     &__item{
+        position: relative;
         margin: 10px;
         width: 160px;
         height: 200px;
@@ -57,10 +58,22 @@
     &__button{
         position: absolute;
         top: 2vh;
-        right: var(--main-pad);
-        padding: .2rem .5rem;
+        right: 50%;
+        transform: translateX(50%);
+        padding: .4rem .8rem;
         background-color: transparent;
-        border: 1px solid rgb(0,0,0);
+        border: none;
+        box-shadow: 0 0 10px 0px rgba(0, 0, 0, .2);
+    }
+    &__removeBtn{
+        position: absolute;
+        top: 0;
+        left: 0;
+        padding: .4rem;
+        border: none;
+        cursor: pointer;
+        background-color: transparent;
+        font-weight: bold;
     }
 }
 
