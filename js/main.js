@@ -183,6 +183,7 @@ window.addEventListener('DOMContentLoaded', Storage.displayCitiesFromStorage)
 //ADDING TO LIBRARY
 
 import * as Lib from './library.js'
+import { addedCities } from './library.js'
 
 Lib.libraryButton.addEventListener('click', () => {
     const libraryBackButton = document.querySelector('.library__button')
@@ -191,7 +192,9 @@ Lib.libraryButton.addEventListener('click', () => {
         Lib.removeLibrary()
         Lib.enableLibraryButton()
     })
-    Lib.addedCities.forEach(city => Lib.displayLibraryCities(city))
+    Lib.addedCities.forEach(city => {
+        Lib.displayLibraryCities(city)
+    })
     Lib.activeLibrary()
     Nav.closeNav()
     Lib.disableLibraryButton()

@@ -44,6 +44,7 @@ function libraryButtonFuncionality() {
     addToLibraryButton.removeEventListener('click', libraryButtonFuncionality)
     window.setTimeout(() => addToLibraryButton.addEventListener('click', libraryButtonFuncionality), 1000)
     saveToStorage(actualCity)
+    console.log(addedCities)
 }
 
 
@@ -69,7 +70,7 @@ async function returnLibraryCitiesData(city) {
 }
 
 export async function displayLibraryCities(city) {
-
+  libraryContainer.innerHTML = `<button class="library__button">Back</button>`
     const resData = await returnLibraryCitiesData(city)
     const {
         humidity,
@@ -171,5 +172,7 @@ function deleteCityFromLocalStorage(button) {
     }
     const cityString = button.parentNode.querySelector('h3').innerText
     citiesStorage.splice(citiesStorage.indexOf(cityString), 1)
+    const cityIndex = addedCities.indexOf(cityString)
+    addedCities.splice(cityIndex, 1)
     localStorage.setItem('cities', JSON.stringify(citiesStorage))
 }
